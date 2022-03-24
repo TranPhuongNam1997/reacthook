@@ -5,33 +5,44 @@ import './App.css'
 
 
 function App() {
-	// const [tab,setTab] = useState(0);
+	const [tab,setTab] = useState('posts');
 
 	const tabs = ['posts','comments','albums','photos','todos']
 
 	const [dataTab,setDataTab] = useState();
 
-	const dataPost = () => axios.get("https://jsonplaceholder.typicode.com/posts").then(res => {
+	const dataPost = () => axios.get(`https://jsonplaceholder.typicode.com/${tab}`).then(res => {
 		console.log(res.data);
 		setDataTab(res.data)
 	});
 
+	// handleTab = () =>{
+
+	// }
 	useEffect(()=>{
 		dataPost()
 	})
 	
 
 	return(
-		<>
+		<div>
 			<ul>
 				{
 					tabs.map((tab,idx) =>(
-						<li key={idx}><button>{tab}</button></li>
+						<li key={idx}><button onClick={() => setTab(tab)}>{tab}</button></li>
 					))
 				}
 			</ul>
-			<div>{this.dataTab}</div>
-		</>
+			<div>
+				<div>
+					{
+						dataTab?.map((data,idx) =>(
+							<li key={idx}>{data.title}</li>
+						))
+					}
+				</div>
+			</div>
+		</div>
 		
 	)
 }
