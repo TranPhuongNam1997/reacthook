@@ -11,16 +11,21 @@ function App() {
 
 	const [dataTab,setDataTab] = useState();
 
-	const dataPost = () => axios.get(`https://jsonplaceholder.typicode.com/${tab}`).then(res => {
-		console.log(res.data);
-		setDataTab(res.data)
-	});
+	
 
 	// handleTab = () =>{
 
+		// const dataPost = () => axios.get(`https://jsonplaceholder.typicode.com/${tab}`).then(res => {
+		// 	console.log(res.data);
+		// 	setDataTab(res.data)
+		// });
 	// }
 	useEffect(()=>{
-		dataPost()
+		fetch(`https://jsonplaceholder.typicode.com/${tab}`)
+		.then(response => response.json())
+		.then(result => {
+			setDataTab(result)
+		})
 	})
 	
 
@@ -28,16 +33,16 @@ function App() {
 		<div>
 			<ul>
 				{
-					tabs.map((tab,idx) =>(
-						<li key={idx}><button onClick={() => setTab(tab)}>{tab}</button></li>
+					tabs.map(item =>(
+						<li key={item}><button onClick={() => setTab(item)}>{item}</button></li>
 					))
 				}
 			</ul>
 			<div>
 				<div>
 					{
-						dataTab?.map((data,idx) =>(
-							<li key={idx}>{data.title}</li>
+						dataTab?.map(data =>(
+							<li key={data.id}>{data.title}</li>
 						))
 					}
 				</div>
