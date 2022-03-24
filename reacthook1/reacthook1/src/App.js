@@ -53,49 +53,70 @@ import AutoSizer from "react-virtualized-auto-sizer";
 
 
 
-function App(){
+function App() {
 
-	const [data, setdata] = useState([]);
+	// let tab = ['posts','comments','albums','photos'];
+	const [datas, setDatas] = useState([]);
+	// const [tabs,setTabs] = useState('posts')
+	const fectchdata  = () => {
+		// data
+		axios.get('https://jsonplaceholder.typicode.com/posts')
+		.then((response) => {
+			// console.log('datas = ',response.data);
+			setDatas(response.data)
 
-	const fectchdata  = () =>{
-		axios.get(`https://jsonplaceholder.typicode.com/posts`)
-		.then(res => {
-
-			console.log('res = ',res)
-			const persons = res.data;
-			setdata(persons)
 		})
 		.catch(error => console.log(error));
 	}
+
 	useEffect(() => {
 		fectchdata();
 	},[]);
 
-	const Row = ({ index, style }) => {
+	// const Row = ({ index, style }) => {
 
-		let _obj = data[index];
-		return(
-			<div style={style}>{_obj.title}</div>
-		)
-	};
-	const Setsize = () => (
-		<AutoSizer>
-			{({ height, width }) => (
-				<List
-					className="List"
-					height={height}
-					itemCount={data.length}
-					itemSize={40}
-					width={width}
-				>
-					{Row}
-				</List>
-			)}
-		</AutoSizer>
-	);
+	// 	let _obj = data[index];
+	// 	return(
+	// 		<div style={style}>{_obj.title}</div>
+	// 	)
+	// };
+	// const Setsize = () => (
+	// 	<AutoSizer>
+	// 		{({ height, width }) => (
+	// 			<List
+	// 				className="List"
+	// 				height={height}
+	// 				itemCount={data.length}
+	// 				itemSize={40}
+	// 				width={width}
+	// 			>
+	// 				{Row}
+	// 			</List>
+	// 		)}
+	// 	</AutoSizer>
+	// );
 
 	return (
-		<Setsize/>
+		<>
+			<div>{datas && datas.map((data,index)=>(
+
+				<span>{data.title} ====== {data.id}</span>
+				
+			))}</div>
+
+
+			{/* {
+				tab.map((tab,idx) =>
+					<div key={idx} className={tab === tabs ? 'nam': 'ly'} style={{display: 'inline-block',marginRight: '10px'}} onClick={() => setTabs(tab)}>{tab}</div>
+				)
+				
+			}
+			<ul>
+				
+				{datas && datas.map((data,index)=> <li key={index}>{data.title || data.name}</li>)}
+
+			</ul> */}
+		</>
 	)
 }
 
